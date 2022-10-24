@@ -11,6 +11,7 @@ function App() {
   const [cards, setCards] = useState<Card[]>([]);
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const pokerHand = new PokerHand(cards);
+  const pokerHandCombo = pokerHand.getOutcome();
 
   const getCards = () => {
     const cards = cardDeck.current.getCards(5);
@@ -51,11 +52,21 @@ function App() {
     console.log(selectedCards);
   };
 
+  const isPartOfCombo = (card: Card) => {
+    return pokerHand.comboCards.indexOf(card) >= 0;
+  };
+
+  const sortCards = () => {
+    setCards(pokerHand.sortedCards);
+  };
+
   const button = (<button onClick={getCards} disabled={(() => cardDeck.current.deck.length === 0)()}>
-    New hand
+    Deal Cards
   </button>);
 
   if (cards.length === 0) return button;
+
+  console.log(pokerHand.comboCards);
 
   return (
     <div className="App faceImages playingCards">
@@ -66,11 +77,13 @@ function App() {
           index={i}
           isSelected={isCardSelected(card)}
           selectCard={selectCard}
+          isPartOfCombo={isPartOfCombo(card)}
         />
       )}
-      <div>Combination: {pokerHand.getOutcome()}</div>
-      <div>{button}</div>
-      <button disabled={isReplaceAvailable()} onClick={() => replaceCards()}>Replace cards</button>
+      <div>Combination: {pokerHandCombo}</div>
+      <button onClick={() => sortCards()}>Sort Cards</button>
+      {button}
+      <button disabled={isReplaceAvailable()} onClick={() => replaceCards()}>Replace Cards</button>
     </div>
   );
 }

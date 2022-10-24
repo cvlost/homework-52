@@ -23,10 +23,16 @@ const value: Value = {
 };
 
 class PokerHand {
+  public comboCards: Card[];
+  public sortedCards: Card[];
+
   constructor(public cards: Card[]) {
+    this.sortedCards = cards.slice();
+    this.sortCards(this.sortedCards);
+    this.comboCards = [];
   }
 
-  static sortCards(cards: Card[]) {
+  sortCards(cards: Card[]) {
     cards.sort((a, b) => value[a.rank] - value[b.rank]);
     cards.sort((a, b) => {
       if (value[a.rank] !== value[b.rank] || value[a.suit] === value[b.suit]) return 0;
@@ -57,8 +63,8 @@ class PokerHand {
 
   isFourOfaKind(cards: Card[]) {
     if (this.isThreeOfaKind(cards) &&
-      (cards[0].rank === cards[3].rank ||
-        cards[4].rank === cards[1].rank)
+      ((cards[0].rank === cards[3].rank && this.comboCards.push(cards[3])) ||
+        (cards[1].rank === cards[4].rank && this.comboCards.push(cards[4])))
     ) return 'Four Of a Kind';
 
     return false;
@@ -78,14 +84,20 @@ class PokerHand {
     if (
       (this.isThreeOfaKind(assumption1.three) && this.isOnePair(assumption1.pair)) ||
       (this.isThreeOfaKind(assumption2.three) && this.isOnePair(assumption2.pair))
-    ) return 'Full House';
+    ) {
+      this.comboCards = this.sortedCards.slice();
+      return 'Full House';
+    }
 
     return false;
   }
 
   isFlush(cards: Card[]) {
     const suit = cards[0].suit;
-    if (cards.every((card) => card.suit === suit)) return 'Flush';
+    if (cards.every((card) => card.suit === suit)) {
+      this.comboCards = this.sortedCards.slice();
+      return 'Flush';
+    }
     return false;
   }
 
@@ -94,12 +106,18 @@ class PokerHand {
       if (
         (cards[3].rank === 'K' && cards[2].rank === 'Q' && cards[1].rank === 'J' && cards[0].rank === '10') ||
         (cards[3].rank === '5' && cards[2].rank === '4' && cards[1].rank === '3' && cards[0].rank === '2')
-      ) return 'Straight';
+      ) {
+        this.comboCards = this.sortedCards.slice();
+        return 'Straight';
+      }
 
     } else if (
       value[cards[0].rank] + 1 === value[cards[1].rank] && value[cards[1].rank] + 1 === value[cards[2].rank] &&
       value[cards[2].rank] + 1 === value[cards[3].rank] && value[cards[3].rank] + 1 === value[cards[4].rank]
-    ) return 'Straight';
+    ) {
+      this.comboCards = this.sortedCards.slice();
+      return 'Straight';
+    }
 
     return false;
   }
@@ -107,6 +125,7 @@ class PokerHand {
   isThreeOfaKind(cards: Card[]) {
     for (let i = 0; i < cards.length - 2; i++) {
       if (cards[i].rank === cards[i + 1].rank && cards[i].rank === cards[i + 2].rank) {
+        this.comboCards.push(cards[i], cards[i + 1], cards[i + 2]);
         return 'Three Of a Kind';
       }
     }
@@ -116,10 +135,11 @@ class PokerHand {
   isTwoPairs(cards: Card[]) {
     for (let i = 0; i < cards.length - 1; i++) {
       if (cards[i].rank === cards[i + 1].rank) {
+        const tempCombo = [cards[i], cards[i+1]];
         if (i === 3) return false;
-
-        for (let j = i + 2; j < cards.length - 1; j++) {
+        else for (let j = i + 2; j < cards.length - 1; j++) {
           if (cards[j].rank === cards[j + 1].rank) {
+            this.comboCards.push(...tempCombo, cards[j], cards[j + 1]);
             return 'Two Pairs';
           }
         }
@@ -131,6 +151,7 @@ class PokerHand {
   isOnePair(cards: Card[]) {
     for (let i = 0; i < cards.length - 1; i++) {
       if (cards[i].rank === cards[i + 1].rank) {
+        this.comboCards.push(cards[i], cards[i + 1]);
         return 'One Pair';
       }
     }
@@ -138,19 +159,17 @@ class PokerHand {
   }
 
   getOutcome() {
-    if (this.cards.length !== 5) return 'Too few cards left';
+    if (this.sortedCards.length !== 5) return 'Too few cards left';
 
-    PokerHand.sortCards(this.cards);
-
-    return this.isRoyalFlush(this.cards) ||
-      this.isStraightFlush(this.cards) ||
-      this.isFourOfaKind(this.cards) ||
-      this.isFullHouse(this.cards) ||
-      this.isFlush(this.cards) ||
-      this.isStraight(this.cards) ||
-      this.isThreeOfaKind(this.cards) ||
-      this.isTwoPairs(this.cards) ||
-      this.isOnePair(this.cards) ||
+    return this.isRoyalFlush(this.sortedCards) ||
+      this.isStraightFlush(this.sortedCards) ||
+      this.isFourOfaKind(this.sortedCards) ||
+      this.isFullHouse(this.sortedCards) ||
+      this.isFlush(this.sortedCards) ||
+      this.isStraight(this.sortedCards) ||
+      this.isThreeOfaKind(this.sortedCards) ||
+      this.isTwoPairs(this.sortedCards) ||
+      this.isOnePair(this.sortedCards) ||
       'No combination found';
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {findAllByDisplayValue} from "@testing-library/react";
+import './CardView.css';
 import Checkbox from "../Checkbox/Checkbox";
 
 type SelectCard = (index: number) => void;
@@ -10,6 +10,7 @@ interface CardProps {
   isSelected: boolean;
   selectCard: SelectCard;
   index: number;
+  isPartOfCombo: boolean;
 }
 
 type SuitMap = { [key: string]: string }
@@ -21,8 +22,8 @@ const suitMap: SuitMap = {
   spades: '♠',
 };
 
-const CardView: React.FC<CardProps> = ({rank, suit, index, selectCard, isSelected}) => {
-  const cardClass = `card rank-${rank.toLowerCase()} ${suit}`;
+const CardView: React.FC<CardProps> = ({rank, suit, index, selectCard, isSelected, isPartOfCombo}) => {
+  const cardClass = `card rank-${rank.toLowerCase()} ${suit} ${isPartOfCombo ? 'card-highlighted' : ''}`;
 
   return (
     <div className="card-container">
