@@ -4,6 +4,7 @@ import './cards.css';
 import CardView from "./components/CardView/CardView";
 import Card from "./lib/Card";
 import CardDeck from "./lib/CardDeck";
+import PokerHand from "./lib/PokerHand";
 
 function App() {
   const cardDeck = useRef(new CardDeck());
@@ -14,7 +15,8 @@ function App() {
     setCards(cards);
   };
 
-  const button = <button onClick={getCards}>Cards</button>
+  const pokerHand = new PokerHand(cards);
+  const button = <button onClick={getCards} disabled={(()=>cardDeck.current.deck.length === 0)()}>Cards</button>
 
   if (cards.length === 0) return button;
 
@@ -26,6 +28,7 @@ function App() {
           suit={card.suit} rank={card.rank}
         />
       )}
+      <div>Combination: {pokerHand.getOutcome()}</div>
       <div>{button}</div>
     </div>
   );
