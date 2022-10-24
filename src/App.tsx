@@ -5,7 +5,7 @@ import CardView from "./components/CardView/CardView";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App faceImages playingCards">
       <CardView suit={'clubs'} rank={'A'} />
     </div>
   );
