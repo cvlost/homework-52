@@ -1,6 +1,6 @@
 import Card from "./Card";
 
-type Value = {[key: string]: number};
+type Value = { [key: string]: number };
 
 const value: Value = {
   diams: 0,
@@ -138,15 +138,11 @@ class PokerHand {
   }
 
   getOutcome() {
-    if (this.cards.length === 2) {
-      const pairCombo = this.isOnePair(this.cards);
-      return pairCombo ? pairCombo : 'No combination found';
-    }
+    if (this.cards.length !== 5) return 'Too few cards left';
 
     PokerHand.sortCards(this.cards);
 
-    const combo =
-      this.isRoyalFlush(this.cards) ||
+    return this.isRoyalFlush(this.cards) ||
       this.isStraightFlush(this.cards) ||
       this.isFourOfaKind(this.cards) ||
       this.isFullHouse(this.cards) ||
@@ -154,10 +150,8 @@ class PokerHand {
       this.isStraight(this.cards) ||
       this.isThreeOfaKind(this.cards) ||
       this.isTwoPairs(this.cards) ||
-      this.isOnePair(this.cards);
-
-    if (combo) return combo;
-    return 'No combination found';
+      this.isOnePair(this.cards) ||
+      'No combination found';
   }
 }
 
