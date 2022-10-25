@@ -23,11 +23,11 @@ const suitMap: SuitMap = {
 };
 
 const CardView: React.FC<CardProps> = ({rank, suit, index, selectCard, isSelected, isPartOfCombo}) => {
-  const cardClass = `card rank-${rank.toLowerCase()} ${suit} ${isPartOfCombo ? 'card-highlighted' : ''}`;
+  const cardClass = `card rank-${rank.toLowerCase()} ${suit} ${isPartOfCombo ? 'card-highlighted' : ''} ${isSelected ? 'card-selected' : ''}`;
 
   return (
-    <div className="card-container">
-      <span className={cardClass}>
+    <div className="card-wrapper">
+      <span className={cardClass} onClick={() => selectCard(index)}>
         <span className="rank">{rank}</span>
         <span className="suit">{suitMap[suit]}</span>
       </span>

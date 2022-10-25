@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
-import './App.css';
 import './cards.css';
+import './App.css';
 import CardView from "./components/CardView/CardView";
 import Card from "./lib/Card";
 import CardDeck from "./lib/CardDeck";
@@ -60,30 +60,46 @@ function App() {
     setCards(pokerHand.sortedCards);
   };
 
-  const button = (<button onClick={getCards} disabled={(() => cardDeck.current.deck.length === 0)()}>
-    Deal Cards
-  </button>);
+  const button = (
+    <button
+      className="btn"
+      onClick={getCards}
+      disabled={(() => cardDeck.current.deck.length === 0)()}
+    >
+      Deal Cards
+    </button>);
 
-  if (cards.length === 0) return button;
+  if (cards.length === 0) return <div className="App">{button}</div>;
 
   console.log(pokerHand.comboCards);
 
   return (
     <div className="App faceImages playingCards">
-      {cards.map((card, i) =>
-        <CardView
-          key={i}
-          suit={card.suit} rank={card.rank}
-          index={i}
-          isSelected={isCardSelected(card)}
-          selectCard={selectCard}
-          isPartOfCombo={isPartOfCombo(card)}
-        />
-      )}
-      <div>Combination: {pokerHandCombo}</div>
-      <button onClick={() => sortCards()}>Sort Cards</button>
-      {button}
-      <button disabled={isReplaceAvailable()} onClick={() => replaceCards()}>Replace Cards</button>
+      <div className="cards-container">
+        {cards.map((card, i) =>
+          <CardView
+            key={i}
+            suit={card.suit} rank={card.rank}
+            index={i}
+            isSelected={isCardSelected(card)}
+            selectCard={selectCard}
+            isPartOfCombo={isPartOfCombo(card)}
+          />
+        )}
+      </div>
+      <div className="info">
+        <div className="info-deck">
+          Cards in the deck: <span>{cardDeck.current.deck.length}</span> left
+        </div>
+        <div className="info-combo">
+          Combination: <span>{pokerHandCombo}</span>
+        </div>
+      </div>
+      <div className="controls">
+        <button className="btn" onClick={() => sortCards()}>Sort Cards</button>
+        {button}
+        <button className="btn" disabled={isReplaceAvailable()} onClick={() => replaceCards()}>Replace Cards</button>
+      </div>
     </div>
   );
 }

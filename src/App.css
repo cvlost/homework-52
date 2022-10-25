@@ -1,3 +1,121 @@
+body {
+    min-height: 100vh;
+    background-color: #44a144;
+    color: #343434;
+    user-select: none;
+}
+
 .App {
-  text-align: center;
+    text-align: center;
+    position: relative;
+    min-height: 100vh;
+}
+
+.App > .btn {
+    font-size: 1.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    padding: 2em .5em 0;
+    flex-wrap: wrap;
+}
+
+.card-wrapper {
+    margin: 0 .3em 1.5em;
+}
+
+.info {
+    font-size: 1.2em;
+    margin-bottom: 1em;
+    background-color: white;
+    padding: .5em 0;
+    letter-spacing: 1px;
+}
+
+.info-deck {
+    font-size: .8em;
+    padding-bottom: .5em;
+    border-bottom: 1px solid gainsboro;
+}
+
+.info-combo {
+    padding-top: .3em;
+}
+
+.info span {
+    font-weight: bold;
+}
+
+.replace-label {
+    font-size: .7em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+}
+
+.replace-input {
+    --size: 2.3em;
+    width: var(--size);
+    height: var(--size);
+    margin-right: .8em;
+    transition: box-shadow .2s;
+}
+
+.replace-input:checked {
+    box-shadow: 0 0 1.2em white;
+}
+
+.replace-input:checked + span {
+    font-weight: bold;
+}
+
+.btn {
+    display: inline-block;
+    padding: 1em 2em;
+    background-color: lavender;
+    outline: none;
+    border: none;
+    margin: .2em .2em;
+    font-weight: bold;
+    font-size: 0.8em;
+    color: inherit;
+    transition: background-color .2s, box-shadow .1s, color .2s;
+    border-radius: .7em;
+}
+
+.btn:not(:disabled) {
+    cursor: pointer;
+}
+
+.btn:disabled {
+    background-color: #acacac;
+    color: #707070;
+}
+
+.btn:not(:disabled):hover {
+    background-color: #b5b3f5;
+}
+
+.btn:not(:disabled):active {
+    box-shadow: 0 0 15px white;
+}
+
+@media (min-width: 900px) {
+    .playingCards.faceImages .card.rank-j,
+    .playingCards.faceImages .card.rank-q,
+    .playingCards.faceImages .card.rank-k {
+        background-repeat: no-repeat;
+        background-position: .5em 0;
+    }
+
+    .App {
+        font-size: 1.4em;
+    }
 }

@@ -11,13 +11,14 @@ interface CheckboxProps {
 const Checkbox: React.FC<CheckboxProps> = ({index, isChecked, changeCheckbox}) => {
   return (
     <div>
-      <label>
+      <label className="replace-label">
         <input
+          className="replace-input"
           type="checkbox"
           checked={isChecked}
           onChange={(e) => changeCheckbox(index)}
         />
-        replace
+        <span>Replace</span>
       </label>
     </div>
   );
