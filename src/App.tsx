@@ -48,8 +48,6 @@ function App() {
 
     setSelectedCards([]);
     setCards(newState);
-
-    console.log(selectedCards);
   };
 
   const isPartOfCombo = (card: Card) => {
@@ -70,8 +68,6 @@ function App() {
     </button>);
 
   if (cards.length === 0) return <div className="App">{button}</div>;
-
-  console.log(pokerHand.comboCards);
 
   return (
     <div className="App faceImages playingCards">
