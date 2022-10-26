@@ -7,13 +7,14 @@ import CardDeck from "./lib/CardDeck";
 import PokerHand from "./lib/PokerHand";
 
 function App() {
-  const cardDeck = useRef(new CardDeck());
+  const cardDeck = useRef<CardDeck | null>(null);
   const [cards, setCards] = useState<Card[]>([]);
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const pokerHand = new PokerHand(cards);
   const pokerHandCombo = pokerHand.getOutcome();
 
   const getCards = () => {
+    cardDeck.current = new CardDeck();
     const cards = cardDeck.current.getCards(5);
     setCards(cards);
     setSelectedCards([]);
@@ -23,18 +24,18 @@ function App() {
     const card = cards[index];
     const newState: Card[] = selectedCards.slice();
 
-    if (selectedCards.indexOf(card) < 0) newState.push(card);
+    if (!selectedCards.includes(card)) newState.push(card);
     else newState.splice(newState.indexOf(card), 1);
 
     setSelectedCards(newState);
   };
 
   const isCardSelected = (card: Card) => {
-    return selectedCards.indexOf(card) >= 0;
+    return selectedCards.includes(card);
   };
 
   const isReplaceAvailable = () => {
-    return selectedCards.length === 0 || cardDeck.current.deck.length === 0;
+    return selectedCards.length === 0 || cardDeck.current!.deck.length === 0;
   };
 
   const replaceCards = () => {
@@ -42,7 +43,7 @@ function App() {
     const newState = cards.slice();
 
     selectedCards.forEach(card => {
-      const newCard = cardDeck.current.getCard();
+      const newCard = cardDeck.current!.getCard();
       if (newCard) newState[newState.indexOf(card)] = newCard;
     });
 
@@ -51,7 +52,7 @@ function App() {
   };
 
   const isPartOfCombo = (card: Card) => {
-    return pokerHand.comboCards.indexOf(card) >= 0;
+    return pokerHand.comboCards.includes(card);
   };
 
   const sortCards = () => {
@@ -62,7 +63,6 @@ function App() {
     <button
       className="btn"
       onClick={getCards}
-      disabled={(() => cardDeck.current.deck.length === 0)()}
     >
       Deal Cards
     </button>);
@@ -77,14 +77,16 @@ function App() {
             key={i}
             suit={card.suit} rank={card.rank}
             isSelected={isCardSelected(card)}
-            onCardSelect={() => {onCardSelect(i)}}
+            onCardSelect={() => {
+              onCardSelect(i)
+            }}
             isPartOfCombo={isPartOfCombo(card)}
           />
         )}
       </div>
       <div className="info">
         <div className="info-deck">
-          Cards in the deck: <span>{cardDeck.current.deck.length}</span> left
+          Cards in the deck: <span>{cardDeck.current!.deck.length}</span> left
         </div>
         <div className="info-combo">
           Combination: <span>{pokerHandCombo}</span>

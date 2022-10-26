@@ -1,6 +1,5 @@
 .card {
     transition: transform .2s, box-shadow .3s, top .3s;
-    cursor: pointer;
     position: relative;
     top: 0;
 }
