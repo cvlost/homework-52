@@ -1,7 +1,8 @@
 .card {
-    transition: transform .2s, box-shadow .3s, top .3s;
+    transition: transform .2s, box-shadow .2s, top .3s;
     position: relative;
     top: 0;
+    box-shadow: 0.2em 0.2em 0.5em #333, inset 0 0 0 0 #009bfe;
 }
 
 .card-selected {
@@ -9,6 +10,6 @@
 }
 
 .card-highlighted {
-    box-shadow: inset 0 0 5px 6px #009bfe !important;
+    box-shadow: 0.2em 0.2em 0.5em #333, inset 0 0 5px 6px #009bfe !important;
     top: -.7em;
 }

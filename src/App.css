@@ -60,7 +60,7 @@ body {
 }
 
 .replace-label {
-    font-size: .7em;
+    font-size: .6em;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -71,7 +71,7 @@ body {
     --size: 2.3em;
     width: var(--size);
     height: var(--size);
-    margin-right: .8em;
+    margin-right: .4em;
     transition: box-shadow .2s;
 }
 

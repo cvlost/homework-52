@@ -43,9 +43,8 @@ class PokerHand {
   }
 
   isStraightFlush(cards: Card[]) {
-    const suit = cards[0].suit;
     if (
-      cards.every((card) => card.suit === suit) &&
+      this.isFlush(cards) &&
       this.isStraight(cards)
     ) return 'Straight Flush';
 
