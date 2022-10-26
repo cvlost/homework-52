@@ -3,10 +3,6 @@ import Card from "./Card";
 type Value = { [key: string]: number };
 
 const value: Value = {
-  diams: 0,
-  hearts: 1,
-  clubs: 2,
-  spades: 3,
   '2': 0,
   '3': 1,
   '4': 2,
@@ -34,11 +30,6 @@ class PokerHand {
 
   sortCards(cards: Card[]) {
     cards.sort((a, b) => value[a.rank] - value[b.rank]);
-    cards.sort((a, b) => {
-      if (value[a.rank] !== value[b.rank] || value[a.suit] === value[b.suit]) return 0;
-      if (value[a.suit] > value[b.suit]) return 1;
-      return -1;
-    });
   }
 
   isRoyalFlush(cards: Card[]) {

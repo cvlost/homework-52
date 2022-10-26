@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import './cards.css';
 import './App.css';
-import CardView from "./components/CardView/CardView";
+import CardView from "./CardView/CardView";
 import Card from "./lib/Card";
 import CardDeck from "./lib/CardDeck";
 import PokerHand from "./lib/PokerHand";
@@ -19,7 +19,7 @@ function App() {
     setSelectedCards([]);
   };
 
-  const selectCard = (index: number) => {
+  const onCardSelect = (index: number) => {
     const card = cards[index];
     const newState: Card[] = selectedCards.slice();
 
@@ -76,9 +76,8 @@ function App() {
           <CardView
             key={i}
             suit={card.suit} rank={card.rank}
-            index={i}
             isSelected={isCardSelected(card)}
-            selectCard={selectCard}
+            onCardSelect={() => {onCardSelect(i)}}
             isPartOfCombo={isPartOfCombo(card)}
           />
         )}
